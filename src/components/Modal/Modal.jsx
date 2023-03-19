@@ -27,11 +27,6 @@ const Modal = ({ isVisible = false, title, content, onClose, onSaveChanges }) =>
                 <div className="modal-body">
                     <div className="modal-content">
                         {content}
-                        <div className="row mt-3">
-                            <div className="col-3 ms-4"></div>
-                            <button className='btn btn-primary w-50' onClick={onSaveChanges}> Save Changes</button>
-                            <div className="col-3"></div>
-                        </div>
                     </div>
                 </div>
             </div>

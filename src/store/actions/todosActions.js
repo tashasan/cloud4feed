@@ -1,9 +1,9 @@
 import { create, getAll } from "../../services/apiServices/todosServices";
 import ActionTypes from "./actionTypes";
 
-const createAction = (createData) => {
+const createAction = (id, createData) => {
     return async (dispatch) => {
-        await create(createData)
+        await create(id, createData)
             .then(async (res) => {
                 if (res.data.code === 200) {
                     await dispatch(createReducer());
@@ -14,10 +14,11 @@ const createAction = (createData) => {
 const createReducer = () => {
     return { type: ActionTypes.todos.CREATE_TODOS_ACTION };
 };
-const getAllAction = () => {
+const getAllAction = (id) => {
     return async (dispatch) => {
-        await getAll()
+        await getAll(id)
             .then(async (res) => {
+                console.log(res)
                 let response = res.data;
                 await dispatch(getAllReducer(response));
             })

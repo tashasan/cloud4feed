@@ -35,6 +35,8 @@ const getByIdAction = (id) => {
         await getById(id)
             .then(async (res) => {
                 let response = res.data;
+                const keys = ["id"];
+                keys.map((e) => delete response[e]);
                 await dispatch(getByIdReducer(response));
             })
     };
