@@ -1,6 +1,8 @@
 import Login from "./Login";
+import Users from "./Users";
 const Pages = {
-    Login
+    Login,
+    Users
 };
 
 export default Pages;

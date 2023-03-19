@@ -12,5 +12,6 @@ const headers = {
 export default axios.create({
     baseURL: BASE_URL,
     headers: headers,
-    withCredentials: true
+    withCredentials: false,
+
 })

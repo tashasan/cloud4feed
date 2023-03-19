@@ -5,11 +5,10 @@ const loginAction = (loginData) => {
     return (dispatch) => {
         login(loginData)
             .then((res) => {
-                if (!res) {
+                if (typeof (res) === "string") {
                     dispatch(loginMessage(res));
                     setLocalStorage("token", res)
                 }
-
             })
     };
 };

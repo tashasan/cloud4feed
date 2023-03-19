@@ -1,13 +1,13 @@
 const users = {
-    CREATE_USERS: "Users",
-    GETALL_USERS: "Users",
-    GETBYID_USERS: "Users",
-    UPDATE_USERS: "Users",
-    REMOVE_USERS: "Users"
+    CREATE_USERS: "users",
+    GETALL_USERS: "users",
+    GETBYID_USERS: "users",
+    UPDATE_USERS: "users",
+    REMOVE_USERS: "users"
 };
 const todos = {
-    GETALLBY_USERSID_TODOS: "Users",
-    CREATE_TODOS: "Users"
+    GETALLBY_USERSID_TODOS: "users",
+    CREATE_TODOS: "users"
 }
 
 const endPoint = {

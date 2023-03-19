@@ -7,6 +7,7 @@ function App() {
   return (
     <Routes>
       <Route exact path="/consumer/login" element={<Pages.Login />} />
+      <Route exact path="/users" element={<Pages.Users />} />
     </Routes>
   );
 }

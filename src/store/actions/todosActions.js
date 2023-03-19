@@ -18,7 +18,7 @@ const getAllAction = () => {
     return async (dispatch) => {
         await getAll()
             .then(async (res) => {
-                let response = res.data.data;
+                let response = res.data;
                 await dispatch(getAllReducer(response));
             })
     };

@@ -34,7 +34,7 @@ const getByIdAction = (id) => {
     return async (dispatch) => {
         await getById(id)
             .then(async (res) => {
-                let response = res.data.data;
+                let response = res.data;
                 await dispatch(getByIdReducer(response));
             })
     };
@@ -46,7 +46,7 @@ const getAllAction = () => {
     return async (dispatch) => {
         await getAll()
             .then(async (res) => {
-                let response = res.data.data;
+                let response = res.data;
                 await dispatch(getAllReducer(response));
             })
     };
