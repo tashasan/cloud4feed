@@ -4,6 +4,7 @@ import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
 import Input from "../components/Input/Input";
 import Modal from "../components/Modal/Modal";
+import Pagination from "../components/Pagination/Pagination";
 import Table from "../components/Table/Table";
 import Actions from "../store/actions";
 import { ButtonType, InputType } from "../utils/ComponentEnums";
@@ -19,7 +20,9 @@ export default function Users() {
     const [content, setContent] = useState(null)
     const [todoData, setTodoData] = useState({ status: "pending" })
     const checkData = Object.keys(updateData).length === 0;
-    console.log(content)
+    const [itemPerPage, setItemPerPage] = useState(10)
+
+    let totalItem = window.localStorage.getItem("page")
     const onUpdate = (id) => {
         dispatch(Actions.usersActions.getByIdAction(id));
         setSelectedUserId(id);
@@ -374,6 +377,11 @@ export default function Users() {
                                 : null
 
                 }
+            />
+            <Pagination
+                totalItems={totalItem}
+                itemsPerPage={itemPerPage}
+                paginate={(data) => { dispatch(Actions.usersActions.getAllPaginateAction(data, itemPerPage)); console.log(data) }}
             />
         </div>
     )

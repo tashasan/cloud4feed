@@ -48,7 +48,7 @@ const getAllAction = () => {
     return async (dispatch) => {
         await getAll()
             .then(async (res) => {
-                console.log(res.headers["x-pagination-pages"])
+                window.localStorage.setItem("page", res.headers["x-pagination-total"]);
                 let response = res.data;
                 await dispatch(getAllReducer(response));
             })
