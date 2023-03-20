@@ -14,31 +14,31 @@ export default function Table({ data, propertyNames }) {
             .reduce((acc, key) => ((acc[key] = v[key]), acc), {})
     );
 
-    if (filteredData.length === 0) {
-        return <div className="fw-bold d-flex justify-content-center">There is no data to display</div>;
-    }
     return (
-        <table className='table table-striped table-rounded text-center border border-info border-2'>
-            <thead>
-                <tr>
-                    {propertyNames.map(val => (
-                        <th key={`h_${val}`}>{val}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    filteredData.map((val, i) => (
-                        <tr key={`i_${i}`} className="bg-warning">
-                            {updatedPropertyNames.map(p => (
-                                <td key={`i_${i}_${p}`}>
-                                    {val[p]}
-                                </td>
-                            ))}
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </table>
+        <>
+            <table className='table table-striped table-rounded text-center border border-info border-2'>
+                <thead>
+                    <tr>
+                        {propertyNames.map(val => (
+                            <th key={`h_${val}`}>{val}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        filteredData.map((val, i) => (
+                            <tr key={`i_${i}`} className="bg-warning">
+                                {updatedPropertyNames.map(p => (
+                                    <td key={`i_${i}_${p}`}>
+                                        {val[p]}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+            {filteredData.length === 0 ? <div className="fw-bold d-flex justify-content-center">There is no data to display</div> : undefined}
+        </>
     )
 }
