@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function Input({ id, inputType, placeholder, value, onChange, onFocus, error, labelValue,disable,title }) {
-    let className = `form-control mt-2 border border-secondary border-1}`;
+export default function Input({ id, inputType,checked, placeholder, value, onChange, onFocus, error, labelValue, disable, title }) {
+    let className = inputType !== "radio" ? `form-control mt-2 border border-secondary border-1` : "";
     let errorField = " border border-danger";
 
     return (
@@ -23,6 +23,7 @@ export default function Input({ id, inputType, placeholder, value, onChange, onF
                 className={error !== undefined ? className += errorField : className}
                 disabled={disable}
                 title={title}
+                checked={checked}
             />
             <span>{error}</span>
         </>

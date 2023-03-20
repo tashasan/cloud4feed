@@ -2,28 +2,14 @@ import { create, update, remove, getById, getAll, getPaginated } from "../../ser
 import ActionTypes from "./actionTypes";
 
 const createAction = (createData) => {
-    return async (dispatch) => {
+    return async () => {
         await create(createData)
-            .then(async (res) => {
-                if (res.data.code === 200) {
-                    await dispatch(createReducer());
-                }
-            })
     };
-};
-const createReducer = () => {
-    return { type: ActionTypes.users.CREATE_USERS_ACTION };
 };
 const updateAction = (updateData, id) => {
-    return async (dispatch) => {
+    return async () => {
         await update(updateData, id)
-            .then(async (res) => {
-                await dispatch(updateReducer());
-            })
     };
-};
-const updateReducer = () => {
-    return { type: ActionTypes.users.UPDATE_USERS_ACTION };
 };
 const removeAction = (id) => {
     return async () => {

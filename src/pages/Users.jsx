@@ -15,10 +15,11 @@ export default function Users() {
     const users = useSelector((e) => e.users.getAll);
     const getUserById = useSelector((e) => [e.users.getById]);
     const getTodos = useSelector((e) => e.todos.getAll)
+    const [createData, setCreateData] = useState({})
     const [updateData, setUpdateData] = useState({})
     const [selectedUserId, setSelectedUserId] = useState(null)
     const [content, setContent] = useState(null)
-    const [todoData, setTodoData] = useState({ status: "pending" })
+    const [todoData, setTodoData] = useState({})
     const checkData = Object.keys(updateData).length === 0;
     const [itemPerPage, setItemPerPage] = useState(10)
 
@@ -33,38 +34,59 @@ export default function Users() {
         setSelectedUserId(id);
     };
     const onDeleteAction = async () => {
-        await dispatch(Actions.usersActions.removeAction(selectedUserId))
+        await dispatch(Actions.usersActions.removeAction(selectedUserId));
         GetLists();
-        setModal(false)
-    }
-    const onFocus = (e) => {
-        e.preventDefault();
-
-    }
+        setModal(false);
+    };
     const onDetails = (id) => {
         setModal(true);
         setSelectedUserId(id);
-        dispatch(Actions.todosActions.getAllAction(id))
+        dispatch(Actions.todosActions.getAllAction(id));
     };
     const onSaveChanges = async () => {
         if (content === "Add Todos") {
-            await dispatch(Actions.todosActions.createAction(selectedUserId, todoData))
-            await dispatch(Actions.todosActions.getAllAction(selectedUserId))
-            setContent("Details")
-            setModal(true)
-            setTodoData({ status: "pending" })
+            await dispatch(Actions.todosActions.createAction(selectedUserId, todoData));
+            await dispatch(Actions.todosActions.getAllAction(selectedUserId));
+            setContent("Details");
+            setModal(true);
+            setTodoData({});
+        }
+        else if (content === "Add Users") {
+            await dispatch(Actions.usersActions.createAction(createData));
+            GetLists();
+            setContent(null);
+            setCreateData({});
+            setModal(false);
         }
         else {
-            await dispatch(Actions.usersActions.updateAction(updateData, selectedUserId))
-            setUpdateData({})
+            await dispatch(Actions.usersActions.updateAction(updateData, selectedUserId));
+            setUpdateData({});
             GetLists();
-            setModal(false)
+            setModal(false);
         }
-
-    }
+    };
     const onChangeText = (e) => {
         e.preventDefault();
         const { id, value, title } = e.target;
+        if (title === "todos") {
+            setTodoData({ ...todoData, [id]: value })
+        }
+        if (title === "users") {
+            setCreateData({ ...createData, [id]: value })
+        }
+        if (Object.keys(updateData).length === 0) {
+
+            setUpdateData({ ...getUserById[0], [id]: value })
+        }
+        else {
+            setUpdateData({ ...updateData, [id]: value })
+        }
+    };
+    const handleOptionChange = (e) => {
+        const { id, value, title } = e.target;
+        if (title === "users") {
+            setCreateData({ ...createData, [id]: value })
+        }
         if (title === "todos") {
             setTodoData({ ...todoData, [id]: value })
         }
@@ -75,7 +97,7 @@ export default function Users() {
         else {
             setUpdateData({ ...updateData, [id]: value })
         }
-    }
+    };
     function GetLists() {
         dispatch(Actions.usersActions.getAllAction());
     };
@@ -84,8 +106,17 @@ export default function Users() {
     }, []);
     return (
         <div className="container-fluid">
-            {users.map((value, index) => (<div className="row mt-2 mb-3">
-                <div className="col-2"></div>
+            <div className="d-flex justify-content-center mt-5">
+                <div className="col-2 ">
+                    <Button
+                        text={"Add New User"}
+                        type={ButtonType.Success}
+                        onClick={() => { setModal(true); setContent("Add Users"); }}
+                    />
+                </div>
+            </div>
+            {users.map((value, index) => (<div className="row mb-3">
+                <div className="col-3"></div>
                 <div className="col-6 mt-5">
                     <Card
                         key={value.id + index}
@@ -185,17 +216,11 @@ export default function Users() {
                         }
                     />
                 </div>
-                <div className="col-2 mt-5">
-                    <Button
-                        text={"Add New User"}
-                        type={ButtonType.Success}
-                    />
-                </div>
             </div>))}
             <Modal
                 isVisible={isModal}
-                title={`Selected User ID: ${selectedUserId}`}
-                onClose={() => { setModal(false); setUpdateData({}); }}
+                title={selectedUserId !== null ? `Selected User ID: ${selectedUserId}` : undefined}
+                onClose={() => { setModal(false); setUpdateData({}); setSelectedUserId(null); }}
                 onSaveChanges={onSaveChanges}
                 content={content === "Update" ?
                     getUserById.map((value, index) =>
@@ -207,10 +232,10 @@ export default function Users() {
                             <div className="col-10 ms-4">
                                 <Input
                                     id={"name"}
+                                    inputType={InputType.Text}
                                     placeholder={value.name}
                                     key={value.id + index}
                                     onChange={onChangeText}
-                                    onFocus={onFocus}
                                     value={checkData ? getUserById[0].name : updateData.name}
                                 />
                             </div>
@@ -222,10 +247,10 @@ export default function Users() {
                             <div className="col-10 ms-4">
                                 <Input
                                     id={"email"}
+                                    inputType={InputType.Email}
                                     placeholder={value.email}
                                     key={value.id + index}
                                     onChange={onChangeText}
-                                    onFocus={onFocus}
                                     value={checkData ? getUserById[0].email : updateData.email}
                                 />
                             </div>
@@ -234,30 +259,55 @@ export default function Users() {
                             <div className="col-1">
                                 <label className="fw-bold mt-3 ms-1">Gender:</label>
                             </div>
-                            <div className="col-10 ms-4">
-                                <Input
-                                    id={"gender"}
-                                    placeholder={value.gender}
-                                    key={value.id + index}
-                                    onChange={onChangeText}
-                                    onFocus={onFocus}
-                                    value={checkData ? getUserById[0].gender : updateData.gender}
-                                />
+                            <div className="col-10 ms-4 d-flex align-items-center">
+                                <label>
+                                    <Input
+                                        id={"gender"}
+                                        value={"female"}
+                                        checked={checkData ? getUserById[0].gender === "female" : updateData.gender === "female"}
+                                        inputType={InputType.Radio}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Female
+                                </label>
+                                <label className="ms-5">
+                                    <Input
+                                        id={"gender"}
+                                        value={"male"}
+                                        checked={checkData ? getUserById[0].gender === "male" : updateData.gender === "male"}
+                                        inputType={InputType.Radio}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Male
+                                </label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-1">
                                 <label className="fw-bold mt-3 ms-1">Status:</label>
                             </div>
-                            <div className="col-10 ms-4">
-                                <Input
-                                    id={"status"}
-                                    placeholder={value.status}
-                                    key={value.id + index}
-                                    onChange={onChangeText}
-                                    onFocus={onFocus}
-                                    value={checkData ? getUserById[0].status : updateData.status}
-                                />
+                            <div className="col-10 ms-4 d-flex align-items-center">
+                                <label>
+                                    <Input
+                                        id={"status"}
+                                        value={"active"}
+                                        checked={checkData ? getUserById[0].status === "active" : updateData.status === "active"}
+                                        inputType={InputType.Radio}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Active
+                                </label>
+                                <label className="ms-5">
+                                    <Input
+                                        id={"status"}
+                                        value={"inactive"}
+                                        checked={checkData ? getUserById[0].status === "inactive" : updateData.status === "inactive"}
+                                        inputType={InputType.Radio}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Inactive
+                                </label>
+
                             </div>
                         </div>
                         <div className="row mt-3">
@@ -323,8 +373,7 @@ export default function Users() {
                                             <Input
                                                 id={"title"}
                                                 title={"todos"}
-                                                //placeholder={value.name}
-                                                // key={value.id + index}
+                                                inputType={InputType.Text}
                                                 onChange={onChangeText}
                                                 value={todoData.title || ""}
                                             />
@@ -339,8 +388,6 @@ export default function Users() {
                                             <Input
                                                 id={"due_on"}
                                                 title={"todos"}
-                                                //placeholder={value.email}
-                                                // key={value.id + index}
                                                 onChange={onChangeText}
                                                 inputType={InputType.Date}
                                                 value={todoData.due_on || ""}
@@ -351,16 +398,30 @@ export default function Users() {
                                         <div className="col-1">
                                             <label className="fw-bold mt-3 ms-1">Status:</label>
                                         </div>
-                                        <div className="col-10 ms-4">
-                                            <Input
-                                                title={"todos"}
-                                                id={"status"}
-                                                //placeholder={value.status}
-                                                key={""}
-                                                onChange={onChangeText}
-                                                value={todoData.status || ""}
-                                                disable
-                                            />
+                                        <div className="col-10 ms-4 d-flex align-items-center">
+                                            <label>
+                                                <Input
+                                                    id={"status"}
+                                                    title={"todos"}
+                                                    value={"pending"}
+                                                    checked={todoData.status === "pending"}
+                                                    inputType={InputType.Radio}
+                                                    onChange={handleOptionChange}
+                                                />
+                                                Pending
+                                            </label>
+                                            <label className="ms-5">
+                                                <Input
+                                                    id={"status"}
+                                                    title={"todos"}
+                                                    value={"completed"}
+                                                    checked={todoData.status === "completed"}
+                                                    inputType={InputType.Radio}
+                                                    onChange={handleOptionChange}
+                                                />
+                                                Completed
+                                            </label>
+
                                         </div>
                                     </div>
                                     <div className="row mt-3">
@@ -374,15 +435,117 @@ export default function Users() {
                                         </div>
                                     </div>
                                 </div>
-                                : null
+                                : content === "Add Users" ?
+                                    <div className="col-12">
+                                        <div className="row">
+                                            <div className="col-1">
+                                                <label className="fw-bold mt-3 ms-1">Name:</label>
+                                            </div>
+                                            <div className="col-10 ms-4">
+                                                <Input
+                                                    id={"name"}
+                                                    title={"users"}
+                                                    inputType={InputType.Text}
+                                                    onChange={onChangeText}
+                                                    value={createData.name || ""}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-1">
+                                                <label className="fw-bold mt-3 ms-1">Email:</label>
+                                            </div>
+                                            <div className="col-10 ms-4">
+                                                <Input
+                                                    id={"email"}
+                                                    title={"users"}
+                                                    inputType={InputType.Email}
+                                                    onChange={onChangeText}
+                                                    value={createData.email || ""}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-1">
+                                                <label className="fw-bold mt-3 ms-1">Gender:</label>
+                                            </div>
+                                            <div className="col-10 ms-4 d-flex align-items-center">
+                                                <label>
+                                                    <Input
+                                                        id={"gender"}
+                                                        title={"users"}
+                                                        value={"female"}
+                                                        checked={createData.gender === "female"}
+                                                        inputType={InputType.Radio}
+                                                        onChange={handleOptionChange}
+                                                    />
+                                                    Female
+                                                </label>
+                                                <label className="ms-5">
+                                                    <Input
+                                                        id={"gender"}
+                                                        title={"users"}
+                                                        value={"male"}
+                                                        checked={createData.gender === "male"}
+                                                        inputType={InputType.Radio}
+                                                        onChange={handleOptionChange}
+                                                    />
+                                                    Male
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-1">
+                                                <label className="fw-bold mt-3 ms-1">Status:</label>
+                                            </div>
+                                            <div className="col-10 ms-4 d-flex align-items-center">
+                                                <label>
+                                                    <Input
+                                                        id={"status"}
+                                                        title={"users"}
+                                                        value={"active"}
+                                                        checked={createData.status === "active"}
+                                                        inputType={InputType.Radio}
+                                                        onChange={handleOptionChange}
+                                                    />
+                                                    Active
+                                                </label>
+                                                <label className="ms-5">
+                                                    <Input
+                                                        id={"status"}
+                                                        title={"users"}
+                                                        value={"inactive"}
+                                                        checked={createData.status === "inactive"}
+                                                        inputType={InputType.Radio}
+                                                        onChange={handleOptionChange}
+                                                    />
+                                                    Inactive
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-4"></div>
+                                            <div className="col-5">
+                                                <Button
+                                                    text={"Save Changes"}
+                                                    onClick={onSaveChanges}
+                                                    type={ButtonType.Primary}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    : undefined
 
                 }
             />
-            <Pagination
-                totalItems={totalItem}
-                itemsPerPage={itemPerPage}
-                paginate={(data) => { dispatch(Actions.usersActions.getAllPaginateAction(data, itemPerPage)); console.log(data) }}
-            />
+            <div className="d-flex justify-content-center">
+                <Pagination
+                    totalItems={totalItem}
+                    itemsPerPage={itemPerPage}
+                    paginate={(data) => { dispatch(Actions.usersActions.getAllPaginateAction(data, itemPerPage)); console.log(data) }}
+                />
+            </div>
         </div>
     )
 }

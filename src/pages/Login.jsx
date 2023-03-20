@@ -6,7 +6,7 @@ import regexValidator from "../hooks/useRegexValidator";
 import validationMessage from "../hooks/useValidationMessage";
 import Button from "../components/Button/Button";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Actions from "../store/actions";
 import { checkLogged } from "../hooks/useCheckLogged";
 import open from "../assets/images/open.svg";
@@ -19,6 +19,7 @@ export default function Login() {
     const [handleErrorMessage, setHandleErrorMessage] = useState(null);
     const [error, setError] = useState({});
     const [shown, setShown] = useState(false);
+    let token = window.localStorage.getItem("token")
 
     const onChangeText = (e) => {
         e.preventDefault();
@@ -50,7 +51,7 @@ export default function Login() {
         }
 
     }
-    return (
+    const content = (
         <div className="container-fluid">
             <div className="d-flex justify-content-center align-items-center mt-5">
                 <div className="col-4"></div>
@@ -59,16 +60,16 @@ export default function Login() {
                         body={<div className="container-fluid">
                             <div className="row">
                                 <div className="col-11">
-                                <Input
-                                    labelValue={{ text: "User Name", className: "fw-bold fs-6" }}
-                                    id={"userName"}
-                                    inputType={InputType.Text}
-                                    placeholder={"User Name"}
-                                    value={loginData.userName || ""}
-                                    error={error.userName}
-                                    onChange={onChangeText}
-                                    onFocus={onFocus}
-                                />
+                                    <Input
+                                        labelValue={{ text: "User Name", className: "fw-bold fs-6" }}
+                                        id={"userName"}
+                                        inputType={InputType.Text}
+                                        placeholder={"User Name"}
+                                        value={loginData.userName || ""}
+                                        error={error.userName}
+                                        onChange={onChangeText}
+                                        onFocus={onFocus}
+                                    />
                                 </div>
                                 <div className="col-1"></div>
                             </div>
@@ -85,7 +86,7 @@ export default function Login() {
                                         onFocus={onFocus}
                                     />
                                 </div>
-                                <div className="col-1" style={{paddingTop:"2.2rem"}}>  {shown ?
+                                <div className="col-1" style={{ paddingTop: "2.2rem" }}>  {shown ?
                                     <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown()} src={open} alt='tableView' /> :
                                     <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown(true)} src={closed} alt='tableView' />}
                                 </div>
@@ -108,5 +109,8 @@ export default function Login() {
                 <div className="col-4"></div>
             </div>
         </div>
+    )
+    return (
+        token !== null ? <Navigate to="/users" /> : content
     )
 }
