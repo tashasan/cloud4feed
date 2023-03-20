@@ -9,13 +9,16 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Actions from "../store/actions";
 import { checkLogged } from "../hooks/useCheckLogged";
+import open from "../assets/images/open.svg";
+import closed from "../assets/images/closed.svg";
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({});
     const [handleErrorMessage, setHandleErrorMessage] = useState(null);
-    const [error, setError] = useState({})
+    const [error, setError] = useState({});
+    const [shown, setShown] = useState(false);
 
     const onChangeText = (e) => {
         e.preventDefault();
@@ -55,6 +58,7 @@ export default function Login() {
                     <Card
                         body={<div className="container-fluid">
                             <div className="row">
+                                <div className="col-11">
                                 <Input
                                     labelValue={{ text: "User Name", className: "fw-bold fs-6" }}
                                     id={"userName"}
@@ -65,18 +69,26 @@ export default function Login() {
                                     onChange={onChangeText}
                                     onFocus={onFocus}
                                 />
+                                </div>
+                                <div className="col-1"></div>
                             </div>
                             <div className="row mt-3">
-                                <Input
-                                    labelValue={{ text: "Token", className: "fw-bold fs-6" }}
-                                    id={"token"}
-                                    inputType={InputType.Password}
-                                    placeholder={"Token"}
-                                    value={loginData.token || ""}
-                                    error={error.token}
-                                    onChange={onChangeText}
-                                    onFocus={onFocus}
-                                />
+                                <div className="col-11">
+                                    <Input
+                                        labelValue={{ text: "Token", className: "fw-bold fs-6" }}
+                                        id={"token"}
+                                        inputType={shown ? InputType.Text : InputType.Password}
+                                        placeholder={"Token"}
+                                        value={loginData.token || ""}
+                                        error={error.token}
+                                        onChange={onChangeText}
+                                        onFocus={onFocus}
+                                    />
+                                </div>
+                                <div className="col-1" style={{paddingTop:"2.2rem"}}>  {shown ?
+                                    <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown()} src={open} alt='tableView' /> :
+                                    <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown(true)} src={closed} alt='tableView' />}
+                                </div>
                             </div>
                             <div className="text-center mt-1">{handleErrorMessage}</div>
                             <div className="row mt-3">

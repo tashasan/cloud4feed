@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Table({ onMouseEnter, labelFunc, data, propertyNames, buttons, emptyThread, matchValues, func, status, labelProp }) {
+export default function Table({ data, propertyNames }) {
 
     const regex = /([A-Z])([a-z]+)|\s/g;
     const updatedPropertyNames = propertyNames.map(name => {
@@ -13,9 +13,12 @@ export default function Table({ onMouseEnter, labelFunc, data, propertyNames, bu
             .filter(k => updatedPropertyNames.includes(k))
             .reduce((acc, key) => ((acc[key] = v[key]), acc), {})
     );
-    console.log(filteredData)
+
+    if (filteredData.length === 0) {
+        return <div className="fw-bold d-flex justify-content-center">There is no data to display</div>;
+    }
     return (
-        <table className='table table-striped table-rounded text-center'>
+        <table className='table table-striped table-rounded text-center border border-info border-2'>
             <thead>
                 <tr>
                     {propertyNames.map(val => (
@@ -24,22 +27,17 @@ export default function Table({ onMouseEnter, labelFunc, data, propertyNames, bu
                 </tr>
             </thead>
             <tbody>
-                {filteredData.length === 0 ?
-
-                    "" :
-
+                {
                     filteredData.map((val, i) => (
-                        <tr key={`i_${i}`}>
+                        <tr key={`i_${i}`} className="bg-warning">
                             {updatedPropertyNames.map(p => (
                                 <td key={`i_${i}_${p}`}>
                                     {val[p]}
                                 </td>
                             ))}
-
                         </tr>
                     ))
                 }
-
             </tbody>
         </table>
     )
