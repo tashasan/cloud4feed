@@ -6,7 +6,7 @@ import Input from "../components/Input/Input";
 import Modal from "../components/Modal/Modal";
 import Table from "../components/Table/Table";
 import Actions from "../store/actions";
-import { ButtonType } from "../utils/ComponentEnums";
+import { ButtonType, InputType } from "../utils/ComponentEnums";
 
 export default function Users() {
     const dispatch = useDispatch();
@@ -17,8 +17,9 @@ export default function Users() {
     const [updateData, setUpdateData] = useState({})
     const [selectedUserId, setSelectedUserId] = useState(null)
     const [content, setContent] = useState(null)
+    const [todoData, setTodoData] = useState({ status: "pending" })
     const checkData = Object.keys(updateData).length === 0;
-
+    console.log(content)
     const onUpdate = (id) => {
         dispatch(Actions.usersActions.getByIdAction(id));
         setSelectedUserId(id);
@@ -43,14 +44,27 @@ export default function Users() {
         dispatch(Actions.todosActions.getAllAction(id))
     };
     const onSaveChanges = async () => {
-        await dispatch(Actions.usersActions.updateAction(updateData, selectedUserId))
-        setUpdateData({})
-        GetLists();
-        setModal(false)
+        if (content === "Add Todos") {
+            await dispatch(Actions.todosActions.createAction(selectedUserId, todoData))
+            await dispatch(Actions.todosActions.getAllAction(selectedUserId))
+            setContent("Details")
+            setModal(true)
+            setTodoData({ status: "pending" })
+        }
+        else {
+            await dispatch(Actions.usersActions.updateAction(updateData, selectedUserId))
+            setUpdateData({})
+            GetLists();
+            setModal(false)
+        }
+
     }
     const onChangeText = (e) => {
         e.preventDefault();
-        const { id, value } = e.target;
+        const { id, value, title } = e.target;
+        if (title === "todos") {
+            setTodoData({ ...todoData, [id]: value })
+        }
         if (Object.keys(updateData).length === 0) {
 
             setUpdateData({ ...getUserById[0], [id]: value })
@@ -277,13 +291,87 @@ export default function Users() {
 
                         </>
                         : content === "Details" ?
-                            <div>
-                                <Table
-                                    propertyNames={["Id", "User Id", "Title", "Due On", "Status"]}
-                                    data={getTodos}
-                                />
+                            <div className="col-12">
+                                <div className="row">
+                                    <Table
+                                        propertyNames={["Id", "User Id", "Title", "Due On", "Status"]}
+                                        data={getTodos}
+                                    />
+                                </div>
+                                <div className="row mt-3">
+                                    <div className="col-3 ms-4"></div>
+                                    <div className="col-5">
+                                        <Button
+                                            text={"Add New Todos"}
+                                            onClick={() => { setContent("Add Todos"); }}
+                                            type={ButtonType.Success}
+                                        />
+                                    </div>
+                                </div>
+
                             </div>
-                            : null
+                            : content === "Add Todos" ?
+                                <div className="col-12">
+                                    <div className="row">
+                                        <div className="col-1">
+                                            <label className="fw-bold mt-3 ms-1">Title:</label>
+                                        </div>
+                                        <div className="col-10 ms-4">
+                                            <Input
+                                                id={"title"}
+                                                title={"todos"}
+                                                //placeholder={value.name}
+                                                // key={value.id + index}
+                                                onChange={onChangeText}
+                                                value={todoData.title || ""}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-1">
+                                            <label className="fw-bold mt-3 ms-1">Due On:
+                                            </label>
+                                        </div>
+                                        <div className="col-10 ms-4">
+                                            <Input
+                                                id={"due_on"}
+                                                title={"todos"}
+                                                //placeholder={value.email}
+                                                // key={value.id + index}
+                                                onChange={onChangeText}
+                                                inputType={InputType.Date}
+                                                value={todoData.due_on || ""}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-1">
+                                            <label className="fw-bold mt-3 ms-1">Status:</label>
+                                        </div>
+                                        <div className="col-10 ms-4">
+                                            <Input
+                                                title={"todos"}
+                                                id={"status"}
+                                                //placeholder={value.status}
+                                                key={""}
+                                                onChange={onChangeText}
+                                                value={todoData.status || ""}
+                                                disable
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mt-3">
+                                        <div className="col-4"></div>
+                                        <div className="col-5">
+                                            <Button
+                                                text={"Save Changes"}
+                                                onClick={onSaveChanges}
+                                                type={ButtonType.Primary}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                : null
 
                 }
             />

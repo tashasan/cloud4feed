@@ -31,6 +31,7 @@ export default function Table({ data, propertyNames }) {
                                 {updatedPropertyNames.map(p => (
                                     <td key={`i_${i}_${p}`}>
                                         {val[p]}
+                                        {console.log(val[p].length)}
                                     </td>
                                 ))}
                             </tr>

@@ -1,6 +1,7 @@
 export const InputType = {
     Password: "password",
-    Text: "text"
+    Text: "text",
+    Date: "date"
 };
 export const ButtonType = {
     Primary: "-primary",
