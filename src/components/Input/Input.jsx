@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function Input({ id, inputType,checked, placeholder, value, onChange, onFocus, error, labelValue, disable, title }) {
     let className = inputType !== "radio" ? `form-control mt-2 border border-secondary border-1` : "";
@@ -27,5 +27,5 @@ export default function Input({ id, inputType,checked, placeholder, value, onCha
             />
             <span>{error}</span>
         </>
-    )
-}
+    );
+};

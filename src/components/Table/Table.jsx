@@ -1,5 +1,6 @@
-import moment from 'moment/moment';
-import React from 'react';
+import React from "react";
+import moment from "moment/moment";
+
 
 export default function Table({ data, propertyNames }) {
 
@@ -16,7 +17,7 @@ export default function Table({ data, propertyNames }) {
     );
     return (
         <>
-            <table className='table table-striped table-rounded text-center border border-info border-2'>
+            <table className="table table-striped table-rounded text-center border border-info border-2">
                 <thead>
                     <tr>
                         {propertyNames.map(val => (

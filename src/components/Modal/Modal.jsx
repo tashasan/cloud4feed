@@ -1,18 +1,17 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 const Modal = ({ isVisible = false, title, content, onClose, onSaveChanges }) => {
     const keydownHandler = ({ key }) => {
         switch (key) {
-            case 'Escape':
+            case "Escape":
                 onClose();
                 break;
             default:
         }
     };
     useEffect(() => {
-        document.addEventListener('keydown', keydownHandler);
-        return () => document.removeEventListener('keydown', keydownHandler);
+        document.addEventListener("keydown", keydownHandler);
+        return () => document.removeEventListener("keydown", keydownHandler);
     });
 
     return !isVisible ? null : (

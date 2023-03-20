@@ -19,7 +19,7 @@ export default function Login() {
     const [handleErrorMessage, setHandleErrorMessage] = useState(null);
     const [error, setError] = useState({});
     const [shown, setShown] = useState(false);
-    let token = window.localStorage.getItem("token")
+    let token = window.localStorage.getItem("token");
 
     const onChangeText = (e) => {
         e.preventDefault();
@@ -50,7 +50,7 @@ export default function Login() {
                 setHandleErrorMessage(<span className="text-danger">Please fill the inputs.</span>)
         }
 
-    }
+    };
     const content = (
         <div className="container-fluid">
             <div className="d-flex justify-content-center align-items-center mt-5">
@@ -109,7 +109,7 @@ export default function Login() {
                 <div className="col-4"></div>
             </div>
         </div>
-    )
+    );
     return (
         token !== null ? <Navigate to="/users" /> : content
     )

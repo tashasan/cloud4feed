@@ -1,4 +1,4 @@
-export const getToken = () => window.localStorage.getItem("token")
+export const getToken = () => window.localStorage.getItem("token");
 
 export const initialState = {
     auth: {
