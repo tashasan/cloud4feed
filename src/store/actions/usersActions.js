@@ -1,4 +1,4 @@
-import { create, update, remove, getById, getAll } from "../../services/apiServices/usersServices";
+import { create, update, remove, getById, getAll, getPaginated } from "../../services/apiServices/usersServices";
 import ActionTypes from "./actionTypes";
 
 const createAction = (createData) => {
@@ -48,6 +48,7 @@ const getAllAction = () => {
     return async (dispatch) => {
         await getAll()
             .then(async (res) => {
+                console.log(res.headers["x-pagination-pages"])
                 let response = res.data;
                 await dispatch(getAllReducer(response));
             })
@@ -56,13 +57,22 @@ const getAllAction = () => {
 const getAllReducer = (data) => {
     return { type: ActionTypes.users.GETALL_USERS_ACTION, payload: { data } };
 };
-
+const getAllPaginateAction = (page, perPage) => {
+    return async (dispatch) => {
+        await getPaginated(page, perPage)
+            .then(async (res) => {
+                let response = res.data;
+                await dispatch(getAllReducer(response));
+            })
+    };
+};
 
 const usersActions = {
     createAction,
     updateAction,
     removeAction,
     getByIdAction,
-    getAllAction
+    getAllAction,
+    getAllPaginateAction
 };
 export default usersActions;

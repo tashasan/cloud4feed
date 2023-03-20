@@ -1,3 +1,4 @@
+import moment from 'moment/moment';
 import React from 'react';
 
 export default function Table({ data, propertyNames }) {
@@ -13,7 +14,6 @@ export default function Table({ data, propertyNames }) {
             .filter(k => updatedPropertyNames.includes(k))
             .reduce((acc, key) => ((acc[key] = v[key]), acc), {})
     );
-
     return (
         <>
             <table className='table table-striped table-rounded text-center border border-info border-2'>
@@ -30,8 +30,7 @@ export default function Table({ data, propertyNames }) {
                             <tr key={`i_${i}`} className="bg-warning">
                                 {updatedPropertyNames.map(p => (
                                     <td key={`i_${i}_${p}`}>
-                                        {val[p]}
-                                        {console.log(val[p].length)}
+                                        {p === "due_on" ? moment(val[p]).format("DD/MM/yyyy") : val[p]}
                                     </td>
                                 ))}
                             </tr>

@@ -3,7 +3,8 @@ const users = {
     GETALL_USERS: "users",
     GETBYID_USERS: "users",
     UPDATE_USERS: "users",
-    REMOVE_USERS: "users"
+    REMOVE_USERS: "users",
+    GETUSERS_PAGINATION: "users"
 };
 const todos = {
     GETALLBY_USERSID_TODOS: "users",
