@@ -109,6 +109,316 @@ export default function Users() {
             GetLists();
         }
     }, []);
+    const updateContent =
+        (getUserById.map((value, index) =>
+        (<div className="col-12">
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Name:</label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"name"}
+                        inputType={InputType.Text}
+                        placeholder={value.name}
+                        key={value.id + index}
+                        onChange={onChangeText}
+                        value={checkData ? getUserById[0].name : updateData.name}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Email:</label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"email"}
+                        inputType={InputType.Email}
+                        placeholder={value.email}
+                        key={value.id + index}
+                        onChange={onChangeText}
+                        value={checkData ? getUserById[0].email : updateData.email}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Gender:</label>
+                </div>
+                <div className="col-10 ms-4 d-flex align-items-center">
+                    <label>
+                        <Input
+                            id={"gender"}
+                            value={"female"}
+                            checked={checkData ? getUserById[0].gender === "female" : updateData.gender === "female"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Female
+                    </label>
+                    <label className="ms-5">
+                        <Input
+                            id={"gender"}
+                            value={"male"}
+                            checked={checkData ? getUserById[0].gender === "male" : updateData.gender === "male"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Male
+                    </label>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Status:</label>
+                </div>
+                <div className="col-10 ms-4 d-flex align-items-center">
+                    <label>
+                        <Input
+                            id={"status"}
+                            value={"active"}
+                            checked={checkData ? getUserById[0].status === "active" : updateData.status === "active"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Active
+                    </label>
+                    <label className="ms-5">
+                        <Input
+                            id={"status"}
+                            value={"inactive"}
+                            checked={checkData ? getUserById[0].status === "inactive" : updateData.status === "inactive"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Inactive
+                    </label>
+
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-4"></div>
+                <div className="col-5">
+                    <Button
+                        text={"Save Changes"}
+                        onClick={onSaveChanges}
+                        type={ButtonType.Primary}
+                    />
+                </div>
+            </div>
+        </div>)))
+    const deleteContent =
+        (<>
+            <div className="row mb-3">
+                <div className="col-5"></div>
+                <div className="col-4">
+                    <label className="fw-bold mt-3 ms-2">{"Are you sure?"}</label>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-4 ms-2"></div>
+                <div className="col-4">
+                    <Button
+                        text={"Yes"}
+                        onClick={onDeleteAction}
+                        outline
+                        type={ButtonType.Danger}
+                    />
+                </div>
+            </div>
+        </>)
+    const detailsContent =
+        (<div className="col-12">
+            <div className="row">
+                <Table
+                    propertyNames={["Id", "User Id", "Title", "Due On", "Status"]}
+                    data={getTodos}
+                />
+            </div>
+            <div className="row mt-3">
+                <div className="col-3 ms-4"></div>
+                <div className="col-5">
+                    <Button
+                        text={"Add New Todos"}
+                        onClick={() => { setContent("Add Todos"); }}
+                        type={ButtonType.Success}
+                    />
+                </div>
+            </div>
+        </div>)
+    const addTodoContent =
+        (<div className="col-12">
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Title:</label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"title"}
+                        title={"todos"}
+                        inputType={InputType.Text}
+                        onChange={onChangeText}
+                        value={todoData.title || ""}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Due On:
+                    </label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"due_on"}
+                        title={"todos"}
+                        onChange={onChangeText}
+                        inputType={InputType.Date}
+                        value={todoData.due_on || ""}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Status:</label>
+                </div>
+                <div className="col-10 ms-4 d-flex align-items-center">
+                    <label>
+                        <Input
+                            id={"status"}
+                            title={"todos"}
+                            value={"pending"}
+                            checked={todoData.status === "pending"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Pending
+                    </label>
+                    <label className="ms-5">
+                        <Input
+                            id={"status"}
+                            title={"todos"}
+                            value={"completed"}
+                            checked={todoData.status === "completed"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Completed
+                    </label>
+
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-4"></div>
+                <div className="col-5">
+                    <Button
+                        text={"Save Changes"}
+                        onClick={onSaveChanges}
+                        type={ButtonType.Primary}
+                    />
+                </div>
+            </div>
+        </div>)
+    const addUsersContent =
+        (<div className="col-12">
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Name:</label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"name"}
+                        title={"users"}
+                        inputType={InputType.Text}
+                        onChange={onChangeText}
+                        value={createData.name || ""}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Email:</label>
+                </div>
+                <div className="col-10 ms-4">
+                    <Input
+                        id={"email"}
+                        title={"users"}
+                        inputType={InputType.Email}
+                        onChange={onChangeText}
+                        value={createData.email || ""}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Gender:</label>
+                </div>
+                <div className="col-10 ms-4 d-flex align-items-center">
+                    <label>
+                        <Input
+                            id={"gender"}
+                            title={"users"}
+                            value={"female"}
+                            checked={createData.gender === "female"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Female
+                    </label>
+                    <label className="ms-5">
+                        <Input
+                            id={"gender"}
+                            title={"users"}
+                            value={"male"}
+                            checked={createData.gender === "male"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Male
+                    </label>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <label className="fw-bold mt-3 ms-1">Status:</label>
+                </div>
+                <div className="col-10 ms-4 d-flex align-items-center">
+                    <label>
+                        <Input
+                            id={"status"}
+                            title={"users"}
+                            value={"active"}
+                            checked={createData.status === "active"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Active
+                    </label>
+                    <label className="ms-5">
+                        <Input
+                            id={"status"}
+                            title={"users"}
+                            value={"inactive"}
+                            checked={createData.status === "inactive"}
+                            inputType={InputType.Radio}
+                            onChange={handleOptionChange}
+                        />
+                        Inactive
+                    </label>
+
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-4"></div>
+                <div className="col-5">
+                    <Button
+                        text={"Save Changes"}
+                        onClick={onSaveChanges}
+                        type={ButtonType.Primary}
+                    />
+                </div>
+            </div>
+        </div>)
     const renderContent = (<div className="container-fluid">
         <div className="d-flex justify-content-center mt-5">
             <div className="col-2 ">
@@ -228,317 +538,15 @@ export default function Users() {
             onSaveChanges={onSaveChanges}
             content={
                 content === "Update" ?
-                    getUserById.map((value, index) =>
-                    (<div className="col-12">
-                        <div className="row">
-                            <div className="col-1">
-                                <label className="fw-bold mt-3 ms-1">Name:</label>
-                            </div>
-                            <div className="col-10 ms-4">
-                                <Input
-                                    id={"name"}
-                                    inputType={InputType.Text}
-                                    placeholder={value.name}
-                                    key={value.id + index}
-                                    onChange={onChangeText}
-                                    value={checkData ? getUserById[0].name : updateData.name}
-                                />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-1">
-                                <label className="fw-bold mt-3 ms-1">Email:</label>
-                            </div>
-                            <div className="col-10 ms-4">
-                                <Input
-                                    id={"email"}
-                                    inputType={InputType.Email}
-                                    placeholder={value.email}
-                                    key={value.id + index}
-                                    onChange={onChangeText}
-                                    value={checkData ? getUserById[0].email : updateData.email}
-                                />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-1">
-                                <label className="fw-bold mt-3 ms-1">Gender:</label>
-                            </div>
-                            <div className="col-10 ms-4 d-flex align-items-center">
-                                <label>
-                                    <Input
-                                        id={"gender"}
-                                        value={"female"}
-                                        checked={checkData ? getUserById[0].gender === "female" : updateData.gender === "female"}
-                                        inputType={InputType.Radio}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Female
-                                </label>
-                                <label className="ms-5">
-                                    <Input
-                                        id={"gender"}
-                                        value={"male"}
-                                        checked={checkData ? getUserById[0].gender === "male" : updateData.gender === "male"}
-                                        inputType={InputType.Radio}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Male
-                                </label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-1">
-                                <label className="fw-bold mt-3 ms-1">Status:</label>
-                            </div>
-                            <div className="col-10 ms-4 d-flex align-items-center">
-                                <label>
-                                    <Input
-                                        id={"status"}
-                                        value={"active"}
-                                        checked={checkData ? getUserById[0].status === "active" : updateData.status === "active"}
-                                        inputType={InputType.Radio}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Active
-                                </label>
-                                <label className="ms-5">
-                                    <Input
-                                        id={"status"}
-                                        value={"inactive"}
-                                        checked={checkData ? getUserById[0].status === "inactive" : updateData.status === "inactive"}
-                                        inputType={InputType.Radio}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Inactive
-                                </label>
-
-                            </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-4"></div>
-                            <div className="col-5">
-                                <Button
-                                    text={"Save Changes"}
-                                    onClick={onSaveChanges}
-                                    type={ButtonType.Primary}
-                                />
-                            </div>
-                        </div>
-                    </div>))
+                    updateContent
                     : content === "Delete" ?
-                        <>
-                            <div className="row mb-3">
-                                <div className="col-4"></div>
-                                <div className="col-4">
-                                    <label className="fw-bold mt-3 ms-4">{"Are you sure?"}</label>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3 ms-4"></div>
-                                <div className="col-4">
-                                    <Button
-                                        text={"Delete"}
-                                        onClick={onDeleteAction}
-                                        outline
-                                        type={ButtonType.Danger}
-                                    />
-                                </div>
-                            </div>
-
-
-                        </>
+                        deleteContent
                         : content === "Details" ?
-                            <div className="col-12">
-                                <div className="row">
-                                    <Table
-                                        propertyNames={["Id", "User Id", "Title", "Due On", "Status"]}
-                                        data={getTodos}
-                                    />
-                                </div>
-                                <div className="row mt-3">
-                                    <div className="col-3 ms-4"></div>
-                                    <div className="col-5">
-                                        <Button
-                                            text={"Add New Todos"}
-                                            onClick={() => { setContent("Add Todos"); }}
-                                            type={ButtonType.Success}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            detailsContent
                             : content === "Add Todos" ?
-                                <div className="col-12">
-                                    <div className="row">
-                                        <div className="col-1">
-                                            <label className="fw-bold mt-3 ms-1">Title:</label>
-                                        </div>
-                                        <div className="col-10 ms-4">
-                                            <Input
-                                                id={"title"}
-                                                title={"todos"}
-                                                inputType={InputType.Text}
-                                                onChange={onChangeText}
-                                                value={todoData.title || ""}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-1">
-                                            <label className="fw-bold mt-3 ms-1">Due On:
-                                            </label>
-                                        </div>
-                                        <div className="col-10 ms-4">
-                                            <Input
-                                                id={"due_on"}
-                                                title={"todos"}
-                                                onChange={onChangeText}
-                                                inputType={InputType.Date}
-                                                value={todoData.due_on || ""}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-1">
-                                            <label className="fw-bold mt-3 ms-1">Status:</label>
-                                        </div>
-                                        <div className="col-10 ms-4 d-flex align-items-center">
-                                            <label>
-                                                <Input
-                                                    id={"status"}
-                                                    title={"todos"}
-                                                    value={"pending"}
-                                                    checked={todoData.status === "pending"}
-                                                    inputType={InputType.Radio}
-                                                    onChange={handleOptionChange}
-                                                />
-                                                Pending
-                                            </label>
-                                            <label className="ms-5">
-                                                <Input
-                                                    id={"status"}
-                                                    title={"todos"}
-                                                    value={"completed"}
-                                                    checked={todoData.status === "completed"}
-                                                    inputType={InputType.Radio}
-                                                    onChange={handleOptionChange}
-                                                />
-                                                Completed
-                                            </label>
-
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-4"></div>
-                                        <div className="col-5">
-                                            <Button
-                                                text={"Save Changes"}
-                                                onClick={onSaveChanges}
-                                                type={ButtonType.Primary}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                addTodoContent
                                 : content === "Add Users" ?
-                                    <div className="col-12">
-                                        <div className="row">
-                                            <div className="col-1">
-                                                <label className="fw-bold mt-3 ms-1">Name:</label>
-                                            </div>
-                                            <div className="col-10 ms-4">
-                                                <Input
-                                                    id={"name"}
-                                                    title={"users"}
-                                                    inputType={InputType.Text}
-                                                    onChange={onChangeText}
-                                                    value={createData.name || ""}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-1">
-                                                <label className="fw-bold mt-3 ms-1">Email:</label>
-                                            </div>
-                                            <div className="col-10 ms-4">
-                                                <Input
-                                                    id={"email"}
-                                                    title={"users"}
-                                                    inputType={InputType.Email}
-                                                    onChange={onChangeText}
-                                                    value={createData.email || ""}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-1">
-                                                <label className="fw-bold mt-3 ms-1">Gender:</label>
-                                            </div>
-                                            <div className="col-10 ms-4 d-flex align-items-center">
-                                                <label>
-                                                    <Input
-                                                        id={"gender"}
-                                                        title={"users"}
-                                                        value={"female"}
-                                                        checked={createData.gender === "female"}
-                                                        inputType={InputType.Radio}
-                                                        onChange={handleOptionChange}
-                                                    />
-                                                    Female
-                                                </label>
-                                                <label className="ms-5">
-                                                    <Input
-                                                        id={"gender"}
-                                                        title={"users"}
-                                                        value={"male"}
-                                                        checked={createData.gender === "male"}
-                                                        inputType={InputType.Radio}
-                                                        onChange={handleOptionChange}
-                                                    />
-                                                    Male
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-1">
-                                                <label className="fw-bold mt-3 ms-1">Status:</label>
-                                            </div>
-                                            <div className="col-10 ms-4 d-flex align-items-center">
-                                                <label>
-                                                    <Input
-                                                        id={"status"}
-                                                        title={"users"}
-                                                        value={"active"}
-                                                        checked={createData.status === "active"}
-                                                        inputType={InputType.Radio}
-                                                        onChange={handleOptionChange}
-                                                    />
-                                                    Active
-                                                </label>
-                                                <label className="ms-5">
-                                                    <Input
-                                                        id={"status"}
-                                                        title={"users"}
-                                                        value={"inactive"}
-                                                        checked={createData.status === "inactive"}
-                                                        inputType={InputType.Radio}
-                                                        onChange={handleOptionChange}
-                                                    />
-                                                    Inactive
-                                                </label>
-
-                                            </div>
-                                        </div>
-                                        <div className="row mt-3">
-                                            <div className="col-4"></div>
-                                            <div className="col-5">
-                                                <Button
-                                                    text={"Save Changes"}
-                                                    onClick={onSaveChanges}
-                                                    type={ButtonType.Primary}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    addUsersContent
                                     : undefined
             }
         />
