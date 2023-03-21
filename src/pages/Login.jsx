@@ -36,6 +36,7 @@ export default function Login() {
         setHandleErrorMessage(null);
     };
     async function isLogged() {
+       await dispatch(Actions.usersActions.getAllAction())
         navigate("/users");
     };
     const onLogin = async (e) => {
@@ -49,7 +50,6 @@ export default function Login() {
                 setHandleErrorMessage(<span className="text-danger">Please fill the inputs correctly.</span>) :
                 setHandleErrorMessage(<span className="text-danger">Please fill the inputs.</span>)
         }
-
     };
     const content = (
         <div className="container-fluid">
@@ -99,6 +99,7 @@ export default function Login() {
                                         text={"Login"}
                                         type={ButtonType.Success}
                                         onClick={onLogin}
+                                        disabled={(Object.values(error).every((val) => val === undefined) && Object.values(loginData).length === 2) ? false : true}
                                     />
                                 </div>
                             </div>
