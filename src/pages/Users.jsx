@@ -24,7 +24,7 @@ export default function Users() {
     const checkData = Object.keys(updateData).length === 0;
     const [itemPerPage, setItemPerPage] = useState(10);
     let token = window.localStorage.getItem("token");
-    const childRef = useRef()
+    const childRef = useRef();
 
     let totalItem = window.localStorage.getItem("page");
     const onUpdate = (id) => {
@@ -331,7 +331,7 @@ export default function Users() {
                             <div className="row mb-3">
                                 <div className="col-4"></div>
                                 <div className="col-4">
-                                    <label className="fw-bold mt-3">{"Are you sure?"}</label>
+                                    <label className="fw-bold mt-3 ms-4">{"Are you sure?"}</label>
                                 </div>
                             </div>
                             <div className="row">
