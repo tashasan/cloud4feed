@@ -5,7 +5,6 @@ const loginAction = (loginData) => {
     return async (dispatch) => {
         await login(loginData)
             .then(async (res) => {
-                console.log(res)
                 setLocalStorage("token", res)
                 return await dispatch(loginMessage(res));
             })

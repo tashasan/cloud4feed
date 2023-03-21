@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 
-const Pagination = ({ itemsPerPage, totalItems, paginate }) => {
+const Pagination = forwardRef(({ itemsPerPage, totalItems, paginate }, ref) => {
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const handleClick = (pageNumber) => {
         setCurrentPage(pageNumber);
         paginate(pageNumber);
     };
+    useImperativeHandle(ref, () => ({
+        handleClick(pageNumber) {
+            setCurrentPage(pageNumber);
+            paginate(pageNumber);
+        }
+    }));
     const pageRange = (min, max) => [...Array(max - min + 1)].map((_, i) => min + i);
     const renderPageNumbers = () => (
         <ul className="pagination">
@@ -55,6 +61,6 @@ const Pagination = ({ itemsPerPage, totalItems, paginate }) => {
     );
 
     return renderPageNumbers();
-};
+});
 
 export default Pagination;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Button from "../components/Button/Button";
@@ -24,6 +24,7 @@ export default function Users() {
     const checkData = Object.keys(updateData).length === 0;
     const [itemPerPage, setItemPerPage] = useState(10);
     let token = window.localStorage.getItem("token");
+    const childRef = useRef()
 
     let totalItem = window.localStorage.getItem("page");
     const onUpdate = (id) => {
@@ -55,7 +56,7 @@ export default function Users() {
         }
         else if (content === "Add Users") {
             await dispatch(Actions.usersActions.createAction(createData));
-            await dispatch(Actions.usersActions.getAllPaginateAction(1, itemPerPage));
+            childRef.current.handleClick(1);
             setContent(null);
             setCreateData({});
             setModal(false);
@@ -543,6 +544,7 @@ export default function Users() {
         />
         <div className="d-flex justify-content-center">
             <Pagination
+                ref={childRef}
                 totalItems={totalItem}
                 itemsPerPage={itemPerPage}
                 paginate={(data) => { dispatch(Actions.usersActions.getAllPaginateAction(data, itemPerPage)) }}
