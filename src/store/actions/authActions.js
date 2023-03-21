@@ -5,8 +5,10 @@ const loginAction = (loginData) => {
     return async (dispatch) => {
         await login(loginData)
             .then(async (res) => {
-                setLocalStorage("token", res)
-                return await dispatch(loginMessage(res));
+                if (typeof (res) === 'string') {
+                    setLocalStorage("token", res)
+                    return await dispatch(loginMessage(res));
+                }
             })
     };
 };

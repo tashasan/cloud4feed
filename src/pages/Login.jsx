@@ -13,13 +13,13 @@ import open from "../assets/images/open.svg";
 import closed from "../assets/images/closed.svg";
 
 export default function Login() {
+    let token = window.localStorage.getItem("token");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({});
     const [handleErrorMessage, setHandleErrorMessage] = useState(null);
     const [error, setError] = useState({});
     const [shown, setShown] = useState(false);
-    let token = window.localStorage.getItem("token");
 
     const onChangeText = (e) => {
         e.preventDefault();
@@ -36,7 +36,7 @@ export default function Login() {
         setHandleErrorMessage(null);
     };
     async function isLogged() {
-       await dispatch(Actions.usersActions.getAllAction())
+        await dispatch(Actions.usersActions.getAllAction())
         navigate("/users");
     };
     const onLogin = async (e) => {
@@ -99,7 +99,7 @@ export default function Login() {
                                         text={"Login"}
                                         type={ButtonType.Success}
                                         onClick={onLogin}
-                                        disabled={(Object.values(error).every((val) => val === undefined) && Object.values(loginData).length === 2) ? false : true}
+                                        disabled={(Object.values(error).every((val) => val === undefined) && Object.values(loginData).length === 2 && Object.values(loginData).every((val) => val !== "")) ? false : true}
                                     />
                                 </div>
                             </div>

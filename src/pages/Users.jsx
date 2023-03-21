@@ -11,6 +11,8 @@ import Actions from "../store/actions";
 import { ButtonType, InputType } from "../utils/ComponentEnums";
 
 export default function Users() {
+    let token = window.localStorage.getItem("token");
+    let totalItem = window.localStorage.getItem("page");
     const dispatch = useDispatch();
     const [isModal, setModal] = useState(false);
     const users = useSelector((e) => e.users.getAll);
@@ -23,10 +25,8 @@ export default function Users() {
     const [todoData, setTodoData] = useState({});
     const checkData = Object.keys(updateData).length === 0;
     const [itemPerPage, setItemPerPage] = useState(10);
-    let token = window.localStorage.getItem("token");
     const childRef = useRef();
 
-    let totalItem = window.localStorage.getItem("page");
     const onUpdate = (id) => {
         dispatch(Actions.usersActions.getByIdAction(id));
         setSelectedUserId(id);
