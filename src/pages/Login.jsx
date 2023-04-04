@@ -86,9 +86,8 @@ export default function Login() {
                                         onFocus={onFocus}
                                     />
                                 </div>
-                                <div className="col-1" style={{ paddingTop: "2.2rem" }}>  {shown ?
-                                    <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown()} src={open} alt='tableView' /> :
-                                    <img role={"button"} style={{ width: "1rem" }} onClick={() => setShown(true)} src={closed} alt='tableView' />}
+                                <div className="col-1" style={{ paddingTop: "2.2rem" }}>
+                                    <img role={"button"} style={{ width: "1rem" }} onClick={(e) => { shown ? setShown(false) : setShown(true) }} src={shown ? open : closed} alt='tableView' />
                                 </div>
                             </div>
                             <div className="text-center mt-1">{handleErrorMessage}</div>
